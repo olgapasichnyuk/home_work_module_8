@@ -24,6 +24,15 @@ users = [
 ]
 
 
+def print_result(result_list):
+    for day_key, name_list in result_list.items():
+
+        if name_list:
+            print(f'{day_key}: {", ".join(name_list)}')
+        else:
+            print(f"{day_key}: no one has a birthday today ")
+
+
 def get_birthdays_per_week(employees: list):
     days_dict = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday"}
     day = datetime.now()
@@ -36,7 +45,7 @@ def get_birthdays_per_week(employees: list):
         day += timedelta(days=1)
         next_week_list.append(day)
 
-        if day.weekday() in range(0, 5):
+        if day.weekday() in range(5):
             result[days_dict[day.weekday()]] = []
 
     for day in next_week_list:
@@ -44,22 +53,15 @@ def get_birthdays_per_week(employees: list):
         for employee in employees:
 
             if (day.month == employee["birthday"].month) and (day.day == employee["birthday"].day) and (
-                    day.weekday() in range(0, 5)):
+                    day.weekday() in range(5)):
 
                 result[days_dict[day.weekday()]].append(employee["name"])
 
             elif (day.month == employee["birthday"].month) and (day.day == employee["birthday"].day) and (
                     day.weekday() in range(5, 7)):
                 result[days_dict[0]].append(employee["name"])
-            else:
-                continue
 
-    for day_key, name_list in result.items():
-
-        if name_list:
-            print(f'{day_key}: {", ".join(name_list)}')
-        else:
-            print(f"{day_key}: no one has a birthday today ")
+    print_result(result)
 
 
 if __name__ == "__main__":
